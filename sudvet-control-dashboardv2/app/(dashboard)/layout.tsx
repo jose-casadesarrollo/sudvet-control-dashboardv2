@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 
 import ProSidebar from "@/components/dashboard/pro-sidebar/sidebar";
 import { sectionItems } from "@/components/dashboard/pro-sidebar/sidebar-items";
+import { supabase } from "@/lib/supabase/client";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
@@ -56,6 +57,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             onNavSelect={(key: string) => {
               if (key === "settings") router.push("/settings");
               if (key === "home") router.push("/dashboard");
+              if (key === "signout") {
+                supabase.auth.signOut().finally(() => router.push("/login"));
+              }
             }}
           />
         </ScrollShadow>
