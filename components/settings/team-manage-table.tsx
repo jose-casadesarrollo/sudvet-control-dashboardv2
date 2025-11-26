@@ -161,9 +161,9 @@ const TeamManageTable = React.forwardRef<HTMLDivElement, TeamManageTableProps>((
                 selectionMode="multiple"
                 onSelectionChange={setRolesFilter}
               >
-                {rolesOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
+                {rolesOptions.map((role: { uid: string; name: string }) => (
+                  <DropdownItem key={role.uid} className="capitalize">
+                    {capitalize(role.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>

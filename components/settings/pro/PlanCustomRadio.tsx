@@ -2,9 +2,23 @@
 
 import { Card, CardBody, Chip, cn } from "@heroui/react";
 
-export default function PlanCustomRadio({ label, price, popular }: { label: string; price: string; popular?: boolean }) {
+type Props = {
+  label: string;
+  price: string;
+  popular?: boolean;
+  selected?: boolean;
+} & React.ComponentProps<typeof Card>;
+
+export default function PlanCustomRadio({ label, price, popular, selected, className, ...props }: Props) {
   return (
-    <Card shadow="none" className={cn("w-56 cursor-pointer border border-default-200 hover:border-primary")}
+    <Card
+      shadow="none"
+      className={cn(
+        "w-56 cursor-pointer border border-default-200 hover:border-primary",
+        selected && "border-primary",
+        className,
+      )}
+      {...props}
     >
       <CardBody className="gap-1">
         <div className="flex items-center justify-between">

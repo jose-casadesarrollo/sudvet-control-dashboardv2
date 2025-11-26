@@ -5,7 +5,8 @@ import {Button, Card, CardBody, Divider, Input, Select, SelectItem, Spacer} from
 import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
-import TeamManageTable from "./team-manage-table";
+import TeamManageTable from "./pro/TeamManageTable";
+import { getTeamMembers } from "../../lib/settings";
 
 interface TeamSettingCardProps {
   className?: string;
@@ -18,7 +19,21 @@ const roleOptions = [
 ];
 
 const TeamSetting = React.forwardRef<HTMLDivElement, TeamSettingCardProps>(
-  ({className, ...rest}, ref) => (
+  ({className, ...rest}, ref) => {
+    const [members, setMembers] = React.useState<any[]>([]);
+
+    React.useEffect(() => {
+      let mounted = true;
+      getTeamMembers().then((m) => {
+        if (!mounted) return;
+        setMembers(m);
+      });
+      return () => {
+        mounted = false;
+      };
+    }, []);
+
+    return (
     <div {...rest} ref={ref} className={cn("p-2", className)}>
       {/* Title */}
       <p className="text-default-700 text-base font-medium">Team</p>
@@ -99,10 +114,11 @@ const TeamSetting = React.forwardRef<HTMLDivElement, TeamSettingCardProps>(
         </CardBody>
       </Card>
       <Spacer y={4} />
-      {/* Team management table */}
-      <TeamManageTable />
+      {/* Team management table (Pro) */}
+      <TeamManageTable members={members} />
     </div>
-  ),
+    );
+  },
 );
 
 TeamSetting.displayName = "TeamSetting";

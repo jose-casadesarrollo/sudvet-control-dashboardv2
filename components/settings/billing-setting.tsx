@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import {Button, Input, RadioGroup, Select, SelectItem, Spacer} from "@heroui/react";
+import {Button, Input, Select, SelectItem, Spacer} from "@heroui/react";
 import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
-
-import {PlanCustomRadio} from "./plan-custom-radio";
+import PlanCustomRadio from "./pro/PlanCustomRadio";
+import {getUserSettings, updateUserSettings} from "../../lib/settings";
 
 interface BillingSettingCardProps {
   className?: string;
@@ -28,7 +28,28 @@ const countryOptions = [
 ];
 
 const BillingSetting = React.forwardRef<HTMLDivElement, BillingSettingCardProps>(
-  ({className, ...props}, ref) => (
+  ({className, ...props}, ref) => {
+    const [plan, setPlan] = React.useState<"pro-monthly" | "pro-yearly">("pro-monthly");
+    const [loading, setLoading] = React.useState(false);
+
+    React.useEffect(() => {
+      let mounted = true;
+      getUserSettings().then((s) => {
+        if (!mounted) return;
+        if (s.billingPlan) setPlan(s.billingPlan as any);
+      });
+      return () => {
+        mounted = false;
+      };
+    }, []);
+
+    const onSave = async () => {
+      setLoading(true);
+      await updateUserSettings({ billingPlan: plan });
+      setLoading(false);
+    };
+
+    return (
     <div ref={ref} className={cn("p-2", className)} {...props}>
       {/* Payment Method */}
       <div>
@@ -59,60 +80,25 @@ const BillingSetting = React.forwardRef<HTMLDivElement, BillingSettingCardProps>
         <p className="text-default-400 mt-1 text-sm font-normal">
           Your free trial ends in <span className="text-default-500">8 days.</span>
         </p>
-        {/* Plan radio group */}
-        <RadioGroup
-          className="mt-4"
-          classNames={{
-            wrapper: "gap-4 flex-row flex-wrap",
-          }}
-          defaultValue="pro-monthly"
-          orientation="horizontal"
-        >
-          <PlanCustomRadio
-            classNames={{
-              label: "text-default-500 font-medium",
-            }}
-            description="Pro Monthly"
-            value="pro-monthly"
-          >
-            <div className="mt-2">
-              <p className="pt-2">
-                <span className="text-default-foreground text-[30px] leading-7 font-semibold">
-                  $12
-                </span>
-                &nbsp;<span className="text-default-400 text-xs font-medium">/per month</span>
-              </p>
-              <ul className="text-default-500 list-inside list-disc text-xs font-normal">
-                <li>Unlimited users</li>
-                <li>All features</li>
-                <li>Support via email and chat</li>
-                <li>Billed monthly, cancel any time</li>
-              </ul>
-            </div>
-          </PlanCustomRadio>
-          <PlanCustomRadio
-            classNames={{
-              label: "text-default-500 font-medium",
-            }}
-            description="Pro Yearly"
-            value="pro-yearly"
-          >
-            <div className="mt-2">
-              <p className="pt-2">
-                <span className="text-default-foreground text-[30px] leading-7 font-semibold">
-                  $72
-                </span>
-                &nbsp;<span className="text-default-400 text-xs font-medium">/per year</span>
-              </p>
-              <ul className="text-default-500 list-inside list-disc text-xs font-normal">
-                <li>Unlimited users</li>
-                <li>All features</li>
-                <li>Support via email and chat</li>
-                <li>Billed monthly, cancel any time</li>
-              </ul>
-            </div>
-          </PlanCustomRadio>
-        </RadioGroup>
+        {/* Plan selector (Pro) */}
+        <div className="mt-4 flex flex-wrap gap-4">
+          <div onClick={() => setPlan("pro-monthly")}
+               className="[&>*]:w-full">
+            <PlanCustomRadio
+              label="Pro Monthly"
+              price="$12 / per month"
+              popular
+              selected={plan === "pro-monthly"}
+            />
+          </div>
+          <div onClick={() => setPlan("pro-yearly")} className="[&>*]:w-full">
+            <PlanCustomRadio
+              label="Pro Yearly"
+              price="$72 / per year"
+              selected={plan === "pro-yearly"}
+            />
+          </div>
+        </div>
       </div>
       <Spacer y={4} />
       {/* Billing Address */}
@@ -143,11 +129,12 @@ const BillingSetting = React.forwardRef<HTMLDivElement, BillingSettingCardProps>
           ))}
         </Select>
       </div>
-      <Button className="bg-default-foreground text-background mt-5" size="sm">
-        Save
+      <Button className="bg-default-foreground text-background mt-5" size="sm" onPress={onSave} isDisabled={loading}>
+        {loading ? "Saving..." : "Save"}
       </Button>
     </div>
-  ),
+    );
+  },
 );
 
 BillingSetting.displayName = "BillingSetting";

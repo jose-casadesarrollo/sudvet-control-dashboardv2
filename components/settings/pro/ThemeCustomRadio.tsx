@@ -1,8 +1,14 @@
 "use client";
 
-import { Card, CardBody, RadioProps, cn } from "@heroui/react";
+import * as React from "react";
+import { Card, CardBody, cn } from "@heroui/react";
 
-export default function ThemeCustomRadio({ selected, children, ...props }: RadioProps & { selected?: boolean }) {
+type Props = {
+  selected?: boolean;
+  children?: React.ReactNode;
+} & Omit<React.ComponentProps<typeof Card>, "children">;
+
+export default function ThemeCustomRadio({ selected, children, ...props }: Props) {
   return (
     <Card
       shadow="none"
@@ -10,7 +16,7 @@ export default function ThemeCustomRadio({ selected, children, ...props }: Radio
         "w-40 h-28 cursor-pointer border border-default-200 data-[selected=true]:border-primary",
         selected && "border-primary",
       )}
-      {...props as any}
+      {...props}
     >
       <CardBody className="items-center justify-center text-small text-default-600">
         {children}

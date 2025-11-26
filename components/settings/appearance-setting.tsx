@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import {RadioGroup, Select, SelectItem, Spacer} from "@heroui/react";
+import {Select, SelectItem, Spacer, Button} from "@heroui/react";
 import {cn} from "@heroui/react";
 
 import SwitchCell from "./switch-cell";
-
-import {ThemeCustomRadio} from "./theme-custom-radio";
+import ThemeCustomRadio from "./pro/ThemeCustomRadio";
+import { getUserSettings, updateUserSettings } from "../../lib/settings";
 
 interface AppearanceSettingCardProps {
   className?: string;
@@ -19,7 +19,28 @@ const fontSizeOptions = [
 ];
 
 const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCardProps>(
-  ({className, ...props}, ref) => (
+  ({className, ...props}, ref) => {
+    const [theme, setTheme] = React.useState<"light" | "dark">("light");
+    const [saving, setSaving] = React.useState(false);
+
+    React.useEffect(() => {
+      let mounted = true;
+      getUserSettings().then((s) => {
+        if (!mounted) return;
+        setTheme(s.theme);
+      });
+      return () => {
+        mounted = false;
+      };
+    }, []);
+
+    const onSave = async () => {
+      setSaving(true);
+      await updateUserSettings({ theme });
+      setSaving(false);
+    };
+
+    return (
     <div ref={ref} className={cn("p-2", className)} {...props}>
       {/* Theme */}
       <div>
@@ -27,15 +48,21 @@ const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCard
         <p className="text-default-400 mt-1 text-sm font-normal">
           Change the appearance of the web.
         </p>
-        {/* Theme radio group */}
-        <RadioGroup className="mt-4 flex-wrap" orientation="horizontal">
-          <ThemeCustomRadio value="free" variant="light">
-            Light
-          </ThemeCustomRadio>
-          <ThemeCustomRadio value="pro" variant="dark">
-            Dark
-          </ThemeCustomRadio>
-        </RadioGroup>
+        {/* Theme selector (Pro) */}
+        <div className="mt-4 flex gap-4">
+          <div onClick={() => setTheme("light")}
+               className="[&>*]:w-full">
+            <ThemeCustomRadio selected={theme === "light"}>Light</ThemeCustomRadio>
+          </div>
+          <div onClick={() => setTheme("dark")} className="[&>*]:w-full">
+            <ThemeCustomRadio selected={theme === "dark"}>Dark</ThemeCustomRadio>
+          </div>
+        </div>
+      </div>
+      <div className="mt-4">
+        <Button className="bg-default-foreground text-background" size="sm" onPress={onSave} isDisabled={saving}>
+          {saving ? "Saving..." : "Save Theme"}
+        </Button>
       </div>
       <Spacer y={4} />
       {/* Font size */}
@@ -71,7 +98,8 @@ const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCard
         label="Use pointer cursor"
       />
     </div>
-  ),
+    );
+  },
 );
 
 AppearanceSetting.displayName = "AppearanceSetting";

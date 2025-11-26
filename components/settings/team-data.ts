@@ -1,4 +1,4 @@
-import {isEqual, uniqWith} from "lodash";
+// Removed lodash dependency: build unique options with Sets
 
 const columns = [
   {name: "NAME", uid: "name", sortable: true},
@@ -36,15 +36,18 @@ const users = [
  * npm install lodash
  * ```
  */
-const rolesOptions = uniqWith(
-  users.map((user) => {
-    return {
-      name: user.role,
-      uid: user.role.toLowerCase(),
-    };
-  }),
-  isEqual,
-);
+const rolesOptions = (() => {
+  const seen = new Set<string>();
+  const result: { name: string; uid: string }[] = [];
+  for (const user of users) {
+    const uid = user.role.toLowerCase();
+    if (!seen.has(uid)) {
+      seen.add(uid);
+      result.push({ name: user.role, uid });
+    }
+  }
+  return result;
+})();
 
 /**
  * To use this function you need to install lodash in your project
@@ -52,14 +55,17 @@ const rolesOptions = uniqWith(
  * npm install lodash
  * ```
  */
-const statusOptions = uniqWith(
-  users.map((user) => {
-    return {
-      name: user.status,
-      uid: user.status.toLowerCase(),
-    };
-  }),
-  isEqual,
-);
+const statusOptions = (() => {
+  const seen = new Set<string>();
+  const result: { name: string; uid: string }[] = [];
+  for (const user of users) {
+    const uid = user.status.toLowerCase();
+    if (!seen.has(uid)) {
+      seen.add(uid);
+      result.push({ name: user.status, uid });
+    }
+  }
+  return result;
+})();
 
 export {columns, users, rolesOptions, statusOptions};

@@ -1,21 +1,7 @@
 "use client";
 
-import React from "react";
-import { RadioGroup, Radio, Button, Switch } from "@heroui/react";
+import AppearanceSetting from "@/components/settings/appearance-setting";
 
 export default function AppearanceSettingsPage() {
-  const [theme, setTheme] = React.useState("system");
-  return (
-    <div className="flex flex-col gap-6">
-      <RadioGroup label="Theme" value={theme} onValueChange={setTheme} orientation="horizontal">
-        <Radio value="light">Light</Radio>
-        <Radio value="dark">Dark</Radio>
-        <Radio value="system">System</Radio>
-      </RadioGroup>
-      <Switch defaultSelected>Use reduced motion</Switch>
-      <div>
-        <Button color="primary">Save</Button>
-      </div>
-    </div>
-  );
+  return <AppearanceSetting />;
 }
