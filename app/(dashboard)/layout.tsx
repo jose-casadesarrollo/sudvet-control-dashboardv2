@@ -152,8 +152,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full items-center justify-between">
                       <Switch
-                        size="lg"
-                        color="success"
+                        size="sm"
+                        color="primary"
                         startContent={<SunIcon />}
                         endContent={<MoonIcon />}
                         isSelected={theme === "dark"}
@@ -164,6 +164,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     </div>
                     <div className="flex w-full items-center justify-between">
                       <Switch
+                        color="primary"
+                        size="sm"
                         isSelected={locale === "en"}
                         onValueChange={(selected) => setLocale(selected ? "en" : "es")}
                       >

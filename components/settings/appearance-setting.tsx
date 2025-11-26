@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import {Select, SelectItem, Spacer, Button} from "@heroui/react";
-import {cn} from "@heroui/react";
+import {Select, SelectItem, Spacer, Switch, cn} from "@heroui/react";
+import { useTheme } from "next-themes";
 
 import SwitchCell from "./switch-cell";
-import ThemeCustomRadio from "./pro/ThemeCustomRadio";
+import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
 import { getUserSettings, updateUserSettings } from "../../lib/settings";
 
 interface AppearanceSettingCardProps {
@@ -21,23 +21,28 @@ const fontSizeOptions = [
 const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCardProps>(
   ({className, ...props}, ref) => {
     const [theme, setTheme] = React.useState<"light" | "dark">("light");
-    const [saving, setSaving] = React.useState(false);
+    const { theme: currentTheme, setTheme: setNextTheme } = useTheme();
 
     React.useEffect(() => {
       let mounted = true;
       getUserSettings().then((s) => {
         if (!mounted) return;
         setTheme(s.theme);
+        // ensure UI theme reflects saved preference on first load
+        if (s.theme && s.theme !== currentTheme) {
+          try { setNextTheme(s.theme); } catch {}
+        }
       });
       return () => {
         mounted = false;
       };
     }, []);
 
-    const onSave = async () => {
-      setSaving(true);
-      await updateUserSettings({ theme });
-      setSaving(false);
+    const onToggleTheme = async (selected: boolean) => {
+      const newTheme: "light" | "dark" = selected ? "dark" : "light";
+      setTheme(newTheme);
+      try { setNextTheme(newTheme); } catch {}
+      try { await updateUserSettings({ theme: newTheme }); } catch {}
     };
 
     return (
@@ -45,24 +50,38 @@ const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCard
       {/* Theme */}
       <div>
         <p className="text-default-700 text-base font-medium">Theme</p>
-        <p className="text-default-400 mt-1 text-sm font-normal">
-          Change the appearance of the web.
-        </p>
-        {/* Theme selector (Pro) */}
-        <div className="mt-4 flex gap-4">
-          <div onClick={() => setTheme("light")}
-               className="[&>*]:w-full">
-            <ThemeCustomRadio selected={theme === "light"}>Light</ThemeCustomRadio>
-          </div>
-          <div onClick={() => setTheme("dark")} className="[&>*]:w-full">
-            <ThemeCustomRadio selected={theme === "dark"}>Dark</ThemeCustomRadio>
-          </div>
+        <p className="text-default-400 mt-1 text-sm font-normal">Change the appearance of the web.</p>
+        <div className="mt-4">
+          <Switch
+            color="primary"
+            isSelected={theme === "dark"}
+            onValueChange={onToggleTheme}
+            startContent={<SunFilledIcon />}
+            endContent={<MoonFilledIcon />}
+            classNames={{
+              base: cn(
+                "inline-flex flex-row-reverse w-full max-w-md bg-content1 hover:bg-content2 items-center",
+                "justify-between cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
+                "data-[selected=true]:border-primary",
+              ),
+              wrapper: "p-0 h-4 overflow-visible",
+              thumb: cn(
+                "w-6 h-6 border-2 shadow-lg",
+                "group-data-[hover=true]:border-primary",
+                // selected
+                "group-data-[selected=true]:ms-6",
+                // pressed
+                "group-data-[pressed=true]:w-7",
+                "group-data-pressed:group-data-selected:ms-4",
+              ),
+            }}
+          >
+            <div className="flex flex-col gap-1">
+              <p className="text-medium">Dark mode</p>
+              <p className="text-tiny text-default-400">Switch between light and dark themes.</p>
+            </div>
+          </Switch>
         </div>
-      </div>
-      <div className="mt-4">
-        <Button className="bg-default-foreground text-background" size="sm" onPress={onSave} isDisabled={saving}>
-          {saving ? "Saving..." : "Save Theme"}
-        </Button>
       </div>
       <Spacer y={4} />
       {/* Font size */}
