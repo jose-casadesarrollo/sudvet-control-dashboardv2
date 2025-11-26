@@ -2,25 +2,51 @@
 
 import React from "react";
 import type { ReactNode } from "react";
-import { Button, ScrollShadow, Spacer, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
+import { ScrollShadow, Spacer, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Switch, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 import ProSidebar from "@/components/dashboard/pro-sidebar/sidebar";
 import { sectionItems } from "@/components/dashboard/pro-sidebar/sidebar-items";
 import { supabase } from "@/lib/supabase/client";
-import { ThemeSwitch } from "@/components/theme-switch";
-import LanguageSwitch from "@/components/language-switch";
+// Inline icon switches per request
+
+const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg aria-hidden="true" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em" {...props}>
+    <path
+      d="M21.53 15.93c-.16-.27-.61-.69-1.73-.49a8.46 8.46 0 01-1.88.13 8.409 8.409 0 01-5.91-2.82 8.068 8.068 0 01-1.44-8.66c.44-1.01.13-1.54-.09-1.76s-.77-.55-1.83-.11a10.318 10.318 0 00-6.32 10.21 10.475 10.475 0 007.04 8.99 10 10 0 002.89.55c.16.01.32.02.48.02a10.5 10.5 0 008.47-4.27c.67-.93.49-1.519.32-1.79z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg aria-hidden="true" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em" {...props}>
+    <g fill="currentColor">
+      <path d="M19 12a7 7 0 11-7-7 7 7 0 017 7z" />
+      <path d="M12 22.96a.969.969 0 01-1-.96v-.08a1 1 0 012 0 1.038 1.038 0 01-1 1.04zm7.14-2.82a1.024 1.024 0 01-.71-.29l-.13-.13a1 1 0 011.41-1.41l.13.13a1 1 0 010 1.41.984.984 0 01-.7.29zm-14.28 0a1.024 1.024 0 01-.71-.29 1 1 0 010-1.41l.13-.13a1 1 0 011.41 1.41l-.13.13a1 1 0 01-.7.29zM22 13h-.08a1 1 0 010-2 1.038 1.038 0 011.04 1 .969.969 0 01-.96 1zM2.08 13H2a1 1 0 010-2 1.038 1.038 0 011.04 1 .969.969 0 01-.96 1zm16.93-7.01a1.024 1.024 0 01-.71-.29 1 1 0 010-1.41l.13-.13a1 1 0 011.41 1.41l-.13.13a.984.984 0 01-.7.29zm-14.02 0a1.024 1.024 0 01-.71-.29l-.13-.14a1 1 0 011.41-1.41l.13.13a1 1 0 010 1.41.97.97 0 01-.7.3zM12 3.04a.969.969 0 01-1-.96V2a1 1 0 012 0 1.038 1.038 0 01-1 1.04z" />
+    </g>
+  </svg>
+);
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const [user, setUser] = React.useState<any | null>(null);
+  const [locale, setLocale] = React.useState<string>(() => {
+    try {
+      return (localStorage.getItem("locale") as string) || "es";
+    } catch {
+      return "es";
+    }
+  });
   const isMobile = useMediaQuery("(max-width: 768px)");
   const isCompact = isCollapsed || isMobile;
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const onToggle = React.useCallback(() => setIsCollapsed((p) => !p), []);
 
@@ -38,6 +64,17 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       mounted = false;
     };
   }, []);
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem("locale", locale);
+    } catch {
+      // ignore
+    }
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = locale === "es" ? "es" : "en";
+    }
+  }, [locale]);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
@@ -92,10 +129,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <h2 className="text-medium text-default-700 font-medium">Overview</h2>
           </div>
           <div className="flex items-center gap-3">
-            <Button size="sm" color="primary" variant="flat" onPress={() => router.refresh()}>
-              Refresh
-            </Button>
-
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 <Avatar
@@ -115,14 +148,27 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   router.push("/login");
                 }
               }}>
-                <DropdownItem key="theme" className="gap-3" isReadOnly>
-                  <div className="flex w-full items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-default-500">Theme</span>
-                      <ThemeSwitch />
+                <DropdownItem key="toggles" className="gap-3" isReadOnly>
+                  <div className="flex w-full flex-col gap-4">
+                    <div className="flex w-full items-center justify-between">
+                      <Switch
+                        size="lg"
+                        color="success"
+                        startContent={<SunIcon />}
+                        endContent={<MoonIcon />}
+                        isSelected={theme === "dark"}
+                        onValueChange={(selected) => setTheme(selected ? "dark" : "light")}
+                      >
+                        Dark mode
+                      </Switch>
                     </div>
-                    <div>
-                      <LanguageSwitch />
+                    <div className="flex w-full items-center justify-between">
+                      <Switch
+                        isSelected={locale === "en"}
+                        onValueChange={(selected) => setLocale(selected ? "en" : "es")}
+                      >
+                        {locale === "en" ? "English" : "Español"}
+                      </Switch>
                     </div>
                   </div>
                 </DropdownItem>
