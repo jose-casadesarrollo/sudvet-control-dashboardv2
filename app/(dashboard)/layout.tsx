@@ -65,15 +65,15 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </ScrollShadow>
       </div>
 
-      <div className="w-full flex-1 flex-col p-4">
+      <div className="w-full flex-1 flex flex-col p-4 min-h-0">
         <header className="rounded-medium border-small border-divider flex items-center gap-3 p-4">
           <Button isIconOnly size="sm" variant="light" onPress={onToggle}>
             <Icon className="text-default-500" height={24} icon="solar:sidebar-minimalistic-outline" width={24} />
           </Button>
           <h2 className="text-medium text-default-700 font-medium">Overview</h2>
         </header>
-        <main className="mt-4 h-full w-full overflow-visible">
-          <div className="rounded-medium border-small border-divider flex h-[90%] w-full flex-col gap-4">
+        <main className="mt-4 flex-1 min-h-0 w-full overflow-hidden">
+          <div className="rounded-medium border-small border-divider flex h-full w-full flex-col gap-4 overflow-y-auto">
             {children}
           </div>
         </main>
