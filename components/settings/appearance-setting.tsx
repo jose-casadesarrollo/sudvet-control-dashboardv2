@@ -54,6 +54,7 @@ const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCard
         <div className="mt-4">
           <Switch
             color="primary"
+            size="sm"
             isSelected={theme === "dark"}
             onValueChange={onToggleTheme}
             startContent={<SunFilledIcon />}
@@ -64,15 +65,15 @@ const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCard
                 "justify-between cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
                 "data-[selected=true]:border-primary",
               ),
-              wrapper: "p-0 h-4 overflow-visible",
+              wrapper: "p-0 h-3 overflow-visible",
               thumb: cn(
-                "w-6 h-6 border-2 shadow-lg",
+                "w-4 h-4 border-2 shadow-lg",
                 "group-data-[hover=true]:border-primary",
                 // selected
-                "group-data-[selected=true]:ms-6",
+                "group-data-[selected=true]:ms-4",
                 // pressed
-                "group-data-[pressed=true]:w-7",
-                "group-data-pressed:group-data-selected:ms-4",
+                "group-data-[pressed=true]:w-5",
+                "group-data-pressed:group-data-selected:ms-3",
               ),
             }}
           >
