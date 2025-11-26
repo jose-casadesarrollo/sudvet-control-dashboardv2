@@ -49,7 +49,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <p className="text-tiny text-default-400 truncate">Product Designer</p>
           </div>
         </div>
-        <ScrollShadow className="-mr-6 h-full max-h-full py-6 pr-6">
+        <ScrollShadow hideScrollBar className="-mr-6 h-full max-h-full py-6 pr-6">
           <ProSidebar
             defaultSelectedKey="home"
             isCompact={isCompact}
@@ -73,9 +73,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <h2 className="text-medium text-default-700 font-medium">Overview</h2>
         </header>
         <main className="mt-4 flex-1 min-h-0 w-full overflow-hidden">
-          <div className="rounded-medium border-small border-divider flex h-full w-full flex-col gap-4 overflow-y-auto">
-            {children}
-          </div>
+          <ScrollShadow hideScrollBar className="rounded-medium border-small border-divider h-full w-full">
+            <div className="flex min-h-full w-full flex-col gap-4">
+              {children}
+            </div>
+          </ScrollShadow>
         </main>
       </div>
     </div>
