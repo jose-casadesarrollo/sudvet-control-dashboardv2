@@ -54,26 +54,21 @@ const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCard
         <div className="mt-4">
           <Switch
             color="primary"
-            size="sm"
+            size="md"
             isSelected={theme === "dark"}
             onValueChange={onToggleTheme}
-            startContent={<SunFilledIcon />}
-            endContent={<MoonFilledIcon />}
+            thumbIcon={({ isSelected, className }) =>
+              isSelected ? (
+                <SunFilledIcon className={className} size={12} />
+              ) : (
+                <MoonFilledIcon className={className} size={12} />
+              )
+            }
             classNames={{
               base: cn(
                 "inline-flex flex-row-reverse w-full max-w-md bg-content1 hover:bg-content2 items-center",
                 "justify-between cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
                 "data-[selected=true]:border-primary",
-              ),
-              wrapper: "p-0 h-3 overflow-visible",
-              thumb: cn(
-                "w-4 h-4 border-2 shadow-lg",
-                "group-data-[hover=true]:border-primary",
-                // selected
-                "group-data-[selected=true]:ms-4",
-                // pressed
-                "group-data-[pressed=true]:w-5",
-                "group-data-pressed:group-data-selected:ms-3",
               ),
             }}
           >
