@@ -79,7 +79,9 @@ export default function Component() {
 
         return item;
       })
-      .filter((column) => Array.from(visibleColumns).includes(column.uid));
+      .filter((column) =>
+        visibleColumns === "all" ? true : (visibleColumns as Set<Key>).has(column.uid as Key),
+      );
   }, [visibleColumns, sortDescriptor]);
 
   const itemFilter = useCallback(
@@ -154,7 +156,7 @@ export default function Component() {
     let resultKeys = new Set<Key>();
 
     if (filterValue) {
-      filteredItems.forEach((item) => {
+      filteredItems.forEach((item: Users) => {
         const stringId = String(item.id);
 
         if ((selectedKeys as Set<string>).has(stringId)) {
@@ -269,7 +271,7 @@ export default function Component() {
                     size="sm"
                     variant="flat"
                     onPress={() => {
-                      setDeletedIds((prev) => new Set(prev).add(user.id));
+                      setDeletedIds((prev: Set<number>) => new Set(prev).add(user.id));
                     }}
                   >
                     Delete
@@ -308,7 +310,7 @@ export default function Component() {
   const onSelectionChange = useMemoizedCallback((keys: Selection) => {
     if (keys === "all") {
       if (filterValue) {
-        const resultKeys = new Set(filteredItems.map((item) => String(item.id)));
+        const resultKeys = new Set(filteredItems.map((item: Users) => String(item.id)));
 
         setSelectedKeys(resultKeys);
       } else {
@@ -319,16 +321,16 @@ export default function Component() {
     } else {
       const resultKeys = new Set<Key>();
 
-      keys.forEach((v) => {
+      keys.forEach((v: Key) => {
         resultKeys.add(v);
       });
       const selectedValue =
         selectedKeys === "all"
-          ? new Set(filteredItems.map((item) => String(item.id)))
+          ? new Set(filteredItems.map((item: Users) => String(item.id)))
           : selectedKeys;
 
-      selectedValue.forEach((v) => {
-        if (items.some((item) => String(item.id) === v)) {
+      (selectedValue as Set<string>).forEach((v: string) => {
+        if (items.some((item: Users) => String(item.id) === v)) {
           return;
         }
         resultKeys.add(v);
@@ -411,7 +413,7 @@ export default function Component() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Sort" items={headerColumns.filter((c) => c.uid !== "actions")}>
-                  {(item) => (
+                  {(item: {uid: ColumnsKey; name: string}) => (
                     <DropdownItem
                       key={item.uid}
                       onPress={() => {
@@ -448,12 +450,12 @@ export default function Component() {
                 <DropdownMenu
                   disallowEmptySelection
                   aria-label="Columns"
-                  items={columns.filter((c) => !["actions"].includes(c.uid))}
+                  items={columns.filter((c) => c.uid !== "actions")}
                   selectedKeys={visibleColumns}
                   selectionMode="multiple"
                   onSelectionChange={setVisibleColumns}
                 >
-                  {(item) => <DropdownItem key={item.uid}>{item.name}</DropdownItem>}
+                  {(item: {uid: ColumnsKey; name: string}) => <DropdownItem key={item.uid}>{item.name}</DropdownItem>}
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -636,13 +638,13 @@ export default function Component() {
         placement="center"
         size="md"
         classNames={{
-          wrapper: "max-w-[720px] sm:max-w-[860px]",
           body: "p-0 max-h-[80vh] overflow-y-auto",
+          backdrop: "backdrop-blur-[6px]",
         }}
         onOpenChange={setIsViewOpen}
       >
-        <ModalContent>
-          {(onClose) => (
+        <ModalContent className="max-w-[720px] sm:max-w-[860px]">
+          {(onClose: () => void) => (
             <ModalBody className="p-0">
               {selectedUser && <ProfileDetailedView user={selectedUser} />}
             </ModalBody>
@@ -657,13 +659,13 @@ export default function Component() {
         placement="center"
         size="md"
         classNames={{
-          wrapper: "max-w-[860px] sm:max-w-[960px]",
           body: "p-0 max-h-[80vh] overflow-y-auto",
+          backdrop: "backdrop-blur-[6px]",
         }}
         onOpenChange={setIsEditOpen}
       >
-        <ModalContent>
-          {(onClose) => (
+        <ModalContent className="max-w-[860px] sm:max-w-[960px]">
+          {(onClose: () => void) => (
             <ModalBody className="p-0">
               {selectedUser && (
                 <ProfileSettingsCard className="shadow-none w-full" user={selectedUser} />

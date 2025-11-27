@@ -84,6 +84,7 @@ export default function Component(props: CardProps & {user: Users}) {
               label="Username"
               labelPlacement="outside"
               placeholder="Enter username"
+              name="username"
               defaultValue={username}
             />
             {/* Email */}
@@ -93,6 +94,7 @@ export default function Component(props: CardProps & {user: Users}) {
               labelPlacement="outside"
               placeholder="Enter email"
               defaultValue={email}
+              name="email"
               type="email"
             />
             {/* First Name */}
@@ -101,6 +103,7 @@ export default function Component(props: CardProps & {user: Users}) {
               label="First Name"
               labelPlacement="outside"
               placeholder="Enter first name"
+              name="firstName"
               defaultValue={firstName}
             />
             {/* Last Name */}
@@ -109,6 +112,7 @@ export default function Component(props: CardProps & {user: Users}) {
               label="Last Name"
               labelPlacement="outside"
               placeholder="Enter last name"
+              name="lastName"
               defaultValue={lastName}
             />
             {/* Phone Number */}
@@ -117,6 +121,7 @@ export default function Component(props: CardProps & {user: Users}) {
               label="Phone Number"
               labelPlacement="outside"
               placeholder="Enter phone number"
+              name="phone"
             />
             {/* Country */}
             <Autocomplete
@@ -126,6 +131,7 @@ export default function Component(props: CardProps & {user: Users}) {
               labelPlacement="outside"
               placeholder="Select country"
               showScrollIndicators={false}
+              name="country"
               defaultSelectedKey={countryCode}
             >
               {(item) => (
@@ -151,6 +157,7 @@ export default function Component(props: CardProps & {user: Users}) {
               label="Address"
               labelPlacement="outside"
               placeholder="Enter address"
+              name="address"
             />
             {/* Zip Code */}
             <Input
@@ -158,6 +165,7 @@ export default function Component(props: CardProps & {user: Users}) {
               label="Zip Code"
               labelPlacement="outside"
               placeholder="Enter zip code"
+              name="zip"
             />
           </div>
 

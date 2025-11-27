@@ -23,7 +23,7 @@ export default function Component({user}: {user: Users}) {
           </Button>
         </CardHeader>
         <CardBody>
-          <div className="pt-6 pb-4">
+          <div className="pt-16 pb-4">
             <p className="text-large font-medium">{user.memberInfo.name}</p>
             <p className="text-small text-default-400 max-w-[90%]">{user.memberInfo.email}</p>
             {!!user.teams?.length && (
