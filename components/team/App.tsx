@@ -49,6 +49,7 @@ import {ArrowDownIcon} from "./arrow-down";
 import {ArrowUpIcon} from "./arrow-up";
 import ProfileDetailedView from "./cards/ProfileDetailedView/App";
 import ProfileSettingsCard from "./cards/ProfileSettingsCard/App";
+import InviteMembersCard from "./cards/InviteMembersCard";
 
 export default function Component() {
   const [filterValue, setFilterValue] = useState("");
@@ -173,6 +174,7 @@ export default function Component() {
   const [selectedUser, setSelectedUser] = useState<Users | null>(null);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
   const openView = useMemoizedCallback((user: Users) => {
     setSelectedUser(user);
     setIsViewOpen(true);
@@ -519,7 +521,7 @@ export default function Component() {
             {users.length}
           </Chip>
         </div>
-        <Button color="primary" endContent={<Icon icon="solar:add-circle-bold" width={20} />}>
+        <Button color="primary" endContent={<Icon icon="solar:add-circle-bold" width={20} />} onPress={() => setIsInviteOpen(true)}>
           Add Member
         </Button>
       </div>
@@ -630,6 +632,27 @@ export default function Component() {
           )}
         </TableBody>
       </Table>
+      {/* Invite Members Modal */}
+      <Modal
+        isOpen={isInviteOpen}
+        backdrop="blur"
+        isDismissable
+        placement="center"
+        size="md"
+        classNames={{
+          body: "p-0 max-h-[80vh] overflow-y-auto",
+          backdrop: "backdrop-blur-[6px]",
+        }}
+        onOpenChange={setIsInviteOpen}
+      >
+        <ModalContent className="max-w-[720px] sm:max-w-[860px]">
+          {(onClose: () => void) => (
+            <ModalBody className="p-0">
+              <InviteMembersCard className="shadow-none w-full" />
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
       {/* View Profile Modal */}
       <Modal
         isOpen={isViewOpen}
