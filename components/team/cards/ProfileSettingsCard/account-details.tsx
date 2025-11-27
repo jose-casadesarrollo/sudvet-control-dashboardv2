@@ -39,7 +39,7 @@ export default function Component(props: CardProps & {user: Users}) {
   const countryCode = countries.find((c) => c.name === user.country.name)?.code;
 
   return (
-    <Card className="max-w-xl p-2" {...cardProps}>
+    <Card className="w-full p-2" {...cardProps}>
       <CardHeader className="flex flex-col items-start px-4 pt-4 pb-0">
         <p className="text-large">Account Details</p>
         <div className="flex gap-4 py-4">

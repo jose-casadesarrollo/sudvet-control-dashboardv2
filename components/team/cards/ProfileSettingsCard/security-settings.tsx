@@ -13,7 +13,7 @@ import CellWrapper from "./cell-wrapper";
 export default function Component(props: CardProps & {user: Users}) {
   const {user, ...cardProps} = props;
   return (
-    <Card className="w-full max-w-lg p-2" {...cardProps}>
+    <Card className="w-full p-2" {...cardProps}>
       <CardHeader className="flex flex-col items-start px-4 pt-4 pb-0">
         <p className="text-large">Security Settings</p>
         <p className="text-small text-default-500">Manage your security preferences</p>

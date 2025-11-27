@@ -633,11 +633,11 @@ export default function Component() {
         isOpen={isViewOpen}
         backdrop="blur"
         isDismissable
-        placement="top"
+        placement="center"
         size="md"
         classNames={{
-          wrapper: "max-w-[480px] sm:max-w-[560px] mt-6 sm:mt-10",
-          body: "p-0",
+          wrapper: "max-w-[720px] sm:max-w-[860px]",
+          body: "p-0 max-h-[80vh] overflow-y-auto",
         }}
         onOpenChange={setIsViewOpen}
       >
@@ -654,11 +654,11 @@ export default function Component() {
         isOpen={isEditOpen}
         backdrop="blur"
         isDismissable
-        placement="top"
+        placement="center"
         size="md"
         classNames={{
-          wrapper: "max-w-[520px] sm:max-w-[640px] mt-6 sm:mt-10",
-          body: "p-0",
+          wrapper: "max-w-[860px] sm:max-w-[960px]",
+          body: "p-0 max-h-[80vh] overflow-y-auto",
         }}
         onOpenChange={setIsEditOpen}
       >
@@ -666,7 +666,7 @@ export default function Component() {
           {(onClose) => (
             <ModalBody className="p-0">
               {selectedUser && (
-                <ProfileSettingsCard className="shadow-none max-h-[80vh] overflow-y-auto overscroll-contain" user={selectedUser} />
+                <ProfileSettingsCard className="shadow-none w-full" user={selectedUser} />
               )}
             </ModalBody>
           )}

@@ -9,7 +9,7 @@ import SwitchCell from "./switch-cell";
 
 export default function Component(props: CardProps) {
   return (
-    <Card className="w-full max-w-lg p-2" {...props}>
+    <Card className="w-full p-2" {...props}>
       <CardHeader className="flex flex-col items-start px-4 pt-4 pb-0">
         <p className="text-large">Notification Settings</p>
         <p className="text-small text-default-500">Manage your notification preferences</p>
