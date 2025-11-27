@@ -629,21 +629,47 @@ export default function Component() {
         </TableBody>
       </Table>
       {/* View Profile Modal */}
-      <Modal isOpen={isViewOpen} backdrop="blur" isDismissable onOpenChange={setIsViewOpen}>
-        <ModalContent>
+      <Modal
+        isOpen={isViewOpen}
+        backdrop="blur"
+        isDismissable
+        placement="top"
+        onOpenChange={setIsViewOpen}
+      >
+        <ModalContent
+          classNames={{
+            wrapper: "max-w-[480px] sm:max-w-[560px] mt-6 sm:mt-10",
+            body: "p-0",
+          }}
+          size="md"
+        >
           {(onClose) => (
-            <ModalBody className="py-6">
+            <ModalBody className="p-0">
               {selectedUser && <ProfileDetailedView user={selectedUser} />}
             </ModalBody>
           )}
         </ModalContent>
       </Modal>
       {/* Edit Profile Settings Modal */}
-      <Modal isOpen={isEditOpen} backdrop="blur" isDismissable onOpenChange={setIsEditOpen}>
-        <ModalContent>
+      <Modal
+        isOpen={isEditOpen}
+        backdrop="blur"
+        isDismissable
+        placement="top"
+        onOpenChange={setIsEditOpen}
+      >
+        <ModalContent
+          classNames={{
+            wrapper: "max-w-[520px] sm:max-w-[640px] mt-6 sm:mt-10",
+            body: "p-0",
+          }}
+          size="md"
+        >
           {(onClose) => (
-            <ModalBody className="py-6">
-              {selectedUser && <ProfileSettingsCard className="shadow-none" user={selectedUser} />}
+            <ModalBody className="p-0">
+              {selectedUser && (
+                <ProfileSettingsCard className="shadow-none max-h-[80vh] overflow-y-auto overscroll-contain" user={selectedUser} />
+              )}
             </ModalBody>
           )}
         </ModalContent>

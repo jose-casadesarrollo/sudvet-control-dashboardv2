@@ -20,7 +20,7 @@ export default function Component(props: CardProps & {user: Users}) {
           tabList: "mx-4 mt-6 text-medium",
           tabContent: "text-small",
         }}
-        size="lg"
+        size="md"
       >
         <Tab
           key="account-settings"

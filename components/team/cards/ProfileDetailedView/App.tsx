@@ -9,8 +9,8 @@ import UserPost from "./user-post";
 
 export default function Component({user}: {user: Users}) {
   return (
-    <div className="flex h-full w-full items-start justify-center overflow-scroll">
-      <Card className="my-10 w-[400px]">
+    <div className="flex w-full items-start justify-center p-3">
+      <Card className="my-2 w-full max-w-[380px] max-h-[80vh] overflow-y-auto overscroll-contain">
         <CardHeader className="relative flex h-[100px] flex-col justify-end overflow-visible bg-linear-to-br from-pink-300 via-purple-300 to-indigo-400">
           <Avatar className="h-20 w-20 translate-y-12" src={user.memberInfo.avatar} />
           <Button
