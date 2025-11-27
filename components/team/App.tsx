@@ -81,7 +81,9 @@ export default function Component() {
         return item;
       })
       .filter((column) =>
-        visibleColumns === "all" ? true : (visibleColumns as Set<Key>).has(column.uid as Key),
+        visibleColumns instanceof Set
+          ? (visibleColumns as Set<Key>).has(column.uid as Key)
+          : true,
       );
   }, [visibleColumns, sortDescriptor]);
 
