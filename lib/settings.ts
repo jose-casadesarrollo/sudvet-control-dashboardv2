@@ -5,7 +5,6 @@ export type UserSettings = {
   userId: string;
   theme: "light" | "dark";
   fontSize: "small" | "medium" | "large";
-  billingPlan: "pro-monthly" | "pro-yearly" | string;
 };
 
 export type TeamMember = { id: string; name: string; email: string; role: string };
@@ -14,7 +13,6 @@ let mockSettings: UserSettings = {
   userId: "user_1",
   theme: "dark",
   fontSize: "large",
-  billingPlan: "pro-monthly",
 };
 
 const mockMembers: TeamMember[] = [

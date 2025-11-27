@@ -12,7 +12,6 @@ import {AcmeIcon} from "./acme";
 import ProfileSetting from "./profile-setting";
 import AppearanceSetting from "./appearance-setting";
 import AccountSetting from "./account-setting";
-import BillingSetting from "./billing-setting";
 import TeamSetting from "./team-setting";
 import SidebarDrawer from "./sidebar-drawer";
 import Sidebar from "./sidebar";
@@ -243,9 +242,7 @@ export default function Component() {
           <Tab key="account" title="Account">
             <AccountSetting />
           </Tab>
-          <Tab key="billing" title="Billing">
-            <BillingSetting />
-          </Tab>
+          
           <Tab key="team" title="Team">
             <TeamSetting />
           </Tab>

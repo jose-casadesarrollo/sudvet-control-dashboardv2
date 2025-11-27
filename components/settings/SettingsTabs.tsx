@@ -9,7 +9,6 @@ const routes = [
   { key: "appearance", title: "Appearance", href: "/settings/appearance" },
   { key: "account", title: "Account", href: "/settings/account" },
   { key: "team", title: "Team", href: "/settings/team" },
-  { key: "billing", title: "Billing", href: "/settings/billing" },
 ];
 
 export default function SettingsTabs() {
