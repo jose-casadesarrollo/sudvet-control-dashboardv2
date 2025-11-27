@@ -28,7 +28,6 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  ScrollShadow,
 } from "@heroui/react";
 import {SearchIcon} from "@heroui/shared-icons";
 import React, {useMemo, useRef, useCallback, useState} from "react";
@@ -409,10 +408,7 @@ export default function Component() {
                     Sort
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu
-                  aria-label="Sort"
-                  items={headerColumns.filter((c) => !["actions", "teams"].includes(c.uid))}
-                >
+                <DropdownMenu aria-label="Sort" items={headerColumns.filter((c) => c.uid !== "actions")}>
                   {(item) => (
                     <DropdownItem
                       key={item.uid}
@@ -567,73 +563,69 @@ export default function Component() {
   return (
     <div className="h-full w-full p-6">
       {topBar}
-      <ScrollShadow orientation="horizontal" className="w-full max-w-full">
-        <div className="min-w-[1200px]">
-          <Table
-            isHeaderSticky
-            aria-label="Example table with custom cells, pagination and sorting"
-            bottomContent={bottomContent}
-            bottomContentPlacement="outside"
-            classNames={{
-              td: "before:bg-transparent",
-            }}
-            selectedKeys={filterSelectedKeys}
-            selectionMode="multiple"
-            sortDescriptor={sortDescriptor}
-            topContent={topContent}
-            topContentPlacement="outside"
-            onSelectionChange={onSelectionChange}
-            onSortChange={setSortDescriptor}
-          >
-            <TableHeader columns={headerColumns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "end" : "start"}
-                  className={cn([
-                    column.uid === "actions" ? "flex items-center justify-end px-[20px]" : "",
-                  ])}
+      <Table
+        isHeaderSticky
+        aria-label="Example table with custom cells, pagination and sorting"
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          td: "before:bg-transparent",
+        }}
+        selectedKeys={filterSelectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={onSelectionChange}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "end" : "start"}
+              className={cn([
+                column.uid === "actions" ? "flex items-center justify-end px-[20px]" : "",
+              ])}
+            >
+              {column.uid === "memberInfo" ? (
+                <div
+                  {...getMemberInfoProps()}
+                  className="flex w-full cursor-pointer items-center justify-between"
                 >
-                  {column.uid === "memberInfo" ? (
-                    <div
-                      {...getMemberInfoProps()}
-                      className="flex w-full cursor-pointer items-center justify-between"
-                    >
-                      {column.name}
-                      {column.sortDirection === "ascending" ? (
-                        <ArrowUpIcon className="text-default-400" />
-                      ) : (
-                        <ArrowDownIcon className="text-default-400" />
-                      )}
-                    </div>
-                  ) : column.info ? (
-                    <div className="flex min-w-[108px] items-center justify-between">
-                      {column.name}
-                      <Tooltip content={column.info}>
-                        <Icon
-                          className="text-default-300"
-                          height={16}
-                          icon="solar:info-circle-linear"
-                          width={16}
-                        />
-                      </Tooltip>
-                    </div>
+                  {column.name}
+                  {column.sortDirection === "ascending" ? (
+                    <ArrowUpIcon className="text-default-400" />
                   ) : (
-                    column.name
+                    <ArrowDownIcon className="text-default-400" />
                   )}
-                </TableColumn>
+                </div>
+              ) : column.info ? (
+                <div className="flex min-w-[108px] items-center justify-between">
+                  {column.name}
+                  <Tooltip content={column.info}>
+                    <Icon
+                      className="text-default-300"
+                      height={16}
+                      icon="solar:info-circle-linear"
+                      width={16}
+                    />
+                  </Tooltip>
+                </div>
+              ) : (
+                column.name
               )}
-            </TableHeader>
-            <TableBody emptyContent={"No users found"} items={sortedItems}>
-              {(item) => (
-                <TableRow key={item.id}>
-                  {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </ScrollShadow>
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No users found"} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }

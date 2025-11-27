@@ -66,27 +66,21 @@ export type ColumnsKey =
 
 export const INITIAL_VISIBLE_COLUMNS: ColumnsKey[] = [
   "workerID",
-  "externalWorkerID",
   "memberInfo",
-  "country",
   "role",
   "workerType",
   "status",
   "startDate",
-  "teams",
   "actions",
 ];
 
 export const columns = [
   {name: "Worker ID", uid: "workerID"},
-  {name: "External Worker ID", uid: "externalWorkerID"},
   {name: "Member", uid: "memberInfo", sortDirection: "ascending"},
-  {name: "Country", uid: "country"},
   {name: "Role", uid: "role"},
   {name: "Worker Type", uid: "workerType"},
   {name: "Status", uid: "status", info: "The user's current status"},
   {name: "Start Date", uid: "startDate", info: "The date the user started"},
-  {name: "Teams", uid: "teams"},
   {name: "Actions", uid: "actions"},
 ];
 
