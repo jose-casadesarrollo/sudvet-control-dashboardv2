@@ -127,12 +127,9 @@ export default function Component() {
       let first = a[col];
       let second = b[col];
 
-      if (col === "memberInfo" || col === "country") {
+      if (col === "memberInfo") {
         first = a[col].name;
         second = b[col].name;
-      } else if (sortDescriptor.column === "externalWorkerID") {
-        first = +a.externalWorkerID.split("EXT-")[1];
-        second = +b.externalWorkerID.split("EXT-")[1];
       }
 
       const cmp = first < second ? -1 : first > second ? 1 : 0;
@@ -177,7 +174,6 @@ export default function Component() {
 
     switch (userKey) {
       case "workerID":
-      case "externalWorkerID":
         return <CopyText>{cellValue}</CopyText>;
       case "memberInfo":
         return (
@@ -207,41 +203,6 @@ export default function Component() {
                 year: "numeric",
               }).format(cellValue as unknown as Date)}
             </p>
-          </div>
-        );
-      case "country":
-        return (
-          <div className="flex items-center gap-2">
-            <div className="h-[16px] w-[16px]">{user[userKey].icon}</div>
-            <p className="text-small text-default-foreground text-nowrap">{user[userKey].name}</p>
-          </div>
-        );
-      case "teams":
-        return (
-          <div className="float-start flex gap-1">
-            {user[userKey].map((team, index) => {
-              if (index < 3) {
-                return (
-                  <Chip
-                    key={team}
-                    className="bg-default-100 text-default-800 rounded-xl px-[6px] capitalize"
-                    size="sm"
-                    variant="flat"
-                  >
-                    {team}
-                  </Chip>
-                );
-              }
-              if (index < 4) {
-                return (
-                  <Chip key={team} className="text-default-500" size="sm" variant="flat">
-                    {`+${team.length - 3}`}
-                  </Chip>
-                );
-              }
-
-              return null;
-            })}
           </div>
         );
       case "role":
