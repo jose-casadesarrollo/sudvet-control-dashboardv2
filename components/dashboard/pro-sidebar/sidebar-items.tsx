@@ -7,7 +7,7 @@ import TeamAvatar from "./team-avatar";
 
 export const items: SidebarItem[] = [
   { key: "home", href: "/dashboard", icon: "solar:home-2-linear", title: "Home" },
-  { key: "team", href: "#", icon: "solar:users-group-two-rounded-outline", title: "Team" },
+  { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
   { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
   { key: "settings", href: "/settings", icon: "solar:settings-outline", title: "Settings" },
 ];
@@ -18,7 +18,7 @@ export const sectionItems: SidebarItem[] = [
     title: "Overview",
     items: [
       { key: "home", href: "/dashboard", icon: "solar:home-2-linear", title: "Home" },
-      { key: "team", href: "#", icon: "solar:users-group-two-rounded-outline", title: "Team" },
+      { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
       { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
     ],
   },

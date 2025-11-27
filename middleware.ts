@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
   const isProtected =
     url.pathname.startsWith("/dashboard") ||
     url.pathname.startsWith("/settings") ||
+    url.pathname.startsWith("/team") ||
     url.pathname.startsWith("/app");
   if (!session && isProtected) {
     const redirectUrl = new URL("/login", req.url);

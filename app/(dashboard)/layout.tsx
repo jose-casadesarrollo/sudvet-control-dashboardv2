@@ -112,6 +112,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             onNavSelect={(key: string) => {
               if (key === "settings") router.push("/settings");
               if (key === "home") router.push("/dashboard");
+              if (key === "team") router.push("/team"); // Added navigation for team
               if (key === "signout") {
                 supabase.auth.signOut().finally(() => router.push("/login"));
               }
