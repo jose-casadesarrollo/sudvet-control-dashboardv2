@@ -1,16 +1,5 @@
 
-import React from "react";
-import ReactDOM from "react-dom/client";
-import {HeroUIProvider} from "@heroui/react";
-import App from "./App";
-import "./styles.css";
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <HeroUIProvider>
-      <div className="w-screen h-screen p-8 flex items-start justify-center">
-        <App />
-      </div>  
-    </HeroUIProvider>
-  </React.StrictMode>
-);
+// Export the App component so it can be imported by Next pages. This avoids
+// using ReactDOM.createRoot inside a Next.js component file which causes
+// build and typing errors.
+export { default } from "./App";
