@@ -24,13 +24,15 @@ import {
   Pagination,
   Divider,
   Tooltip,
-  useButton,
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Modal,
+  ModalBody,
+  ModalContent,
 } from "@heroui/react";
 import {SearchIcon} from "@heroui/shared-icons";
-import React, {useMemo, useRef, useCallback, useState} from "react";
+import React, {useMemo, useCallback, useState} from "react";
 import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
@@ -45,6 +47,8 @@ import {EditLinearIcon} from "./edit";
 import {DeleteFilledIcon} from "./delete";
 import {ArrowDownIcon} from "./arrow-down";
 import {ArrowUpIcon} from "./arrow-up";
+import ProfileDetailedView from "./cards/ProfileDetailedView/App";
+import ProfileSettingsCard from "./cards/ProfileSettingsCard/App";
 
 export default function Component() {
   const [filterValue, setFilterValue] = useState("");
@@ -97,8 +101,15 @@ export default function Component() {
     [startDateFilter, statusFilter, workerTypeFilter],
   );
 
+  const [deletedIds, setDeletedIds] = useState<Set<number>>(new Set());
+
   const filteredItems = useMemo(() => {
     let filteredUsers = [...users];
+
+    // remove deleted users
+    if (deletedIds.size > 0) {
+      filteredUsers = filteredUsers.filter((u) => !deletedIds.has(u.id));
+    }
 
     if (filterValue) {
       filteredUsers = filteredUsers.filter((user) =>
@@ -109,7 +120,7 @@ export default function Component() {
     filteredUsers = filteredUsers.filter(itemFilter);
 
     return filteredUsers;
-  }, [filterValue, itemFilter]);
+  }, [filterValue, itemFilter, deletedIds]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
@@ -157,12 +168,19 @@ export default function Component() {
     return resultKeys;
   }, [selectedKeys, filteredItems, filterValue]);
 
-  const eyesRef = useRef<HTMLButtonElement | null>(null);
-  const editRef = useRef<HTMLButtonElement | null>(null);
-  const deleteRef = useRef<HTMLButtonElement | null>(null);
-  const {getButtonProps: getEyesProps} = useButton({ref: eyesRef});
-  const {getButtonProps: getEditProps} = useButton({ref: editRef});
-  const {getButtonProps: getDeleteProps} = useButton({ref: deleteRef});
+  const [selectedUser, setSelectedUser] = useState<Users | null>(null);
+  const [isViewOpen, setIsViewOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const openView = useMemoizedCallback((user: Users) => {
+    setSelectedUser(user);
+    setIsViewOpen(true);
+  });
+  const openEdit = useMemoizedCallback((user: Users) => {
+    setSelectedUser(user);
+    setIsEditOpen(true);
+  });
+  const closeView = useMemoizedCallback(() => setIsViewOpen(false));
+  const closeEdit = useMemoizedCallback(() => setIsEditOpen(false));
   const getMemberInfoProps = useMemoizedCallback(() => ({
     onClick: handleMemberClick,
   }));
@@ -218,24 +236,47 @@ export default function Component() {
       case "actions":
         return (
           <div className="flex items-center justify-end gap-2">
-            <EyeFilledIcon
-              {...getEyesProps()}
-              className="text-default-400 cursor-pointer"
-              height={18}
-              width={18}
-            />
-            <EditLinearIcon
-              {...getEditProps()}
-              className="text-default-400 cursor-pointer"
-              height={18}
-              width={18}
-            />
-            <DeleteFilledIcon
-              {...getDeleteProps()}
-              className="text-default-400 cursor-pointer"
-              height={18}
-              width={18}
-            />
+            <Button
+              isIconOnly
+              size="sm"
+              variant="light"
+              aria-label="View profile"
+              onPress={() => openView(user)}
+            >
+              <EyeFilledIcon className="text-default-400" height={18} width={18} />
+            </Button>
+            <Button
+              isIconOnly
+              size="sm"
+              variant="light"
+              aria-label="Edit profile settings"
+              onPress={() => openEdit(user)}
+            >
+              <EditLinearIcon className="text-default-400" height={18} width={18} />
+            </Button>
+            <Popover placement="left" backdrop="blur" isDismissable>
+              <PopoverTrigger>
+                <Button isIconOnly size="sm" variant="light" aria-label="Delete member">
+                  <DeleteFilledIcon className="text-default-400" height={18} width={18} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="bg-black border border-red-500 text-white p-3 w-[220px]">
+                <div className="flex flex-col gap-3">
+                  <p className="text-sm">Delete user?</p>
+                  <Button
+                    className="bg-black text-red-500 border border-red-500"
+                    radius="full"
+                    size="sm"
+                    variant="flat"
+                    onPress={() => {
+                      setDeletedIds((prev) => new Set(prev).add(user.id));
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
         );
       default:
@@ -587,6 +628,26 @@ export default function Component() {
           )}
         </TableBody>
       </Table>
+      {/* View Profile Modal */}
+      <Modal isOpen={isViewOpen} backdrop="blur" isDismissable onOpenChange={setIsViewOpen}>
+        <ModalContent>
+          {(onClose) => (
+            <ModalBody className="py-6">
+              {selectedUser && <ProfileDetailedView user={selectedUser} />}
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
+      {/* Edit Profile Settings Modal */}
+      <Modal isOpen={isEditOpen} backdrop="blur" isDismissable onOpenChange={setIsEditOpen}>
+        <ModalContent>
+          {(onClose) => (
+            <ModalBody className="py-6">
+              {selectedUser && <ProfileSettingsCard className="shadow-none" user={selectedUser} />}
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
