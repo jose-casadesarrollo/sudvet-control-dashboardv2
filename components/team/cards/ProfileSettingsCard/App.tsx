@@ -14,7 +14,7 @@ import SecuritySettings from "./security-settings";
 export default function Component(props: CardProps & {user: Users}) {
   const {user, ...cardProps} = props;
   return (
-    <Card {...cardProps}>
+    <Card className="w-full max-w-[960px]" {...cardProps}>
       <Tabs
         classNames={{
           tabList: "mx-4 mt-6 text-medium",

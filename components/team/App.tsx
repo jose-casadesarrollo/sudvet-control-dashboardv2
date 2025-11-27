@@ -633,18 +633,21 @@ export default function Component() {
         isOpen={isViewOpen}
         backdrop="blur"
         isDismissable
-        placement="top"
+        placement="center"
         size="md"
+        scrollBehavior="inside"
         classNames={{
-          wrapper: "max-w-[480px] sm:max-w-[560px] mt-6 sm:mt-10",
-          body: "p-0",
+          wrapper: "w-full max-w-[960px]",
+          body: "p-0 no-scrollbar",
         }}
         onOpenChange={setIsViewOpen}
       >
         <ModalContent>
           {(onClose) => (
             <ModalBody className="p-0">
-              {selectedUser && <ProfileDetailedView user={selectedUser} />}
+              <div className="w-full mx-auto max-w-[960px]">
+                {selectedUser && <ProfileDetailedView user={selectedUser} />}
+              </div>
             </ModalBody>
           )}
         </ModalContent>
@@ -654,20 +657,23 @@ export default function Component() {
         isOpen={isEditOpen}
         backdrop="blur"
         isDismissable
-        placement="top"
+        placement="center"
         size="md"
+        scrollBehavior="inside"
         classNames={{
-          wrapper: "max-w-[520px] sm:max-w-[640px] mt-6 sm:mt-10",
-          body: "p-0",
+          wrapper: "w-full max-w-[960px]",
+          body: "p-0 no-scrollbar",
         }}
         onOpenChange={setIsEditOpen}
       >
         <ModalContent>
           {(onClose) => (
             <ModalBody className="p-0">
-              {selectedUser && (
-                <ProfileSettingsCard className="shadow-none max-h-[80vh] overflow-y-auto overscroll-contain" user={selectedUser} />
-              )}
+              <div className="w-full mx-auto max-w-[960px]">
+                {selectedUser && (
+                  <ProfileSettingsCard className="shadow-none w-full" user={selectedUser} />
+                )}
+              </div>
             </ModalBody>
           )}
         </ModalContent>
