@@ -416,7 +416,15 @@ export default function Component() {
                     Sort
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Sort" items={headerColumns.filter((c) => c.uid !== "actions")}>
+                <DropdownMenu
+                  aria-label="Sort"
+                  items={headerColumns
+                    .filter((c: {uid: string; name: string}) => c.uid !== "actions")
+                    .map((c: {uid: string; name: string}) => ({
+                      uid: c.uid as ColumnsKey,
+                      name: c.name,
+                    }))}
+                >
                   {(item: {uid: ColumnsKey; name: string}) => (
                     <DropdownItem
                       key={item.uid}
@@ -454,7 +462,12 @@ export default function Component() {
                 <DropdownMenu
                   disallowEmptySelection
                   aria-label="Columns"
-                  items={columns.filter((c) => c.uid !== "actions")}
+                  items={columns
+                    .filter((c: {uid: string; name: string}) => c.uid !== "actions")
+                    .map((c: {uid: string; name: string}) => ({
+                      uid: c.uid as ColumnsKey,
+                      name: c.name,
+                    }))}
                   selectedKeys={visibleColumns}
                   selectionMode="multiple"
                   onSelectionChange={setVisibleColumns}
