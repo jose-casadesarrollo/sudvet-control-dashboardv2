@@ -9,6 +9,7 @@ import { cn } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { updateUserSettings } from "@/lib/settings";
 
 import ProSidebar from "@/components/dashboard/pro-sidebar/sidebar";
 import { sectionItems } from "@/components/dashboard/pro-sidebar/sidebar-items";
@@ -158,7 +159,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                         startContent={<SunIcon />}
                         endContent={<MoonIcon />}
                         isSelected={theme === "dark"}
-                        onValueChange={(selected) => setTheme(selected ? "dark" : "light")}
+                        onValueChange={async (selected) => {
+                          const newTheme = selected ? "dark" : "light";
+                          setTheme(newTheme);
+                          try { await updateUserSettings({ theme: newTheme }); } catch {}
+                        }}
                       >
                         Dark mode
                       </Switch>

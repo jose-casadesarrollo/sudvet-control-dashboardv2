@@ -20,23 +20,33 @@ const fontSizeOptions = [
 
 const AppearanceSetting = React.forwardRef<HTMLDivElement, AppearanceSettingCardProps>(
   ({className, ...props}, ref) => {
-    const [theme, setTheme] = React.useState<"light" | "dark">("light");
     const { theme: currentTheme, setTheme: setNextTheme } = useTheme();
+    const [theme, setTheme] = React.useState<"light" | "dark">("dark");
 
+    // Keep the local switch in sync with the active UI theme
+    React.useEffect(() => {
+      if (currentTheme === "light" || currentTheme === "dark") {
+        setTheme(currentTheme);
+      }
+    }, [currentTheme]);
+
+    // Load saved settings but do NOT override the active UI theme.
+    // If there's a mismatch, persist the current theme to settings instead.
     React.useEffect(() => {
       let mounted = true;
       getUserSettings().then((s) => {
         if (!mounted) return;
-        setTheme(s.theme);
-        // ensure UI theme reflects saved preference on first load
-        if (s.theme && s.theme !== currentTheme) {
-          try { setNextTheme(s.theme); } catch {}
+        if (
+          (currentTheme === "light" || currentTheme === "dark") &&
+          s.theme !== currentTheme
+        ) {
+          try { updateUserSettings({ theme: currentTheme as "light" | "dark" }); } catch {}
         }
       });
       return () => {
         mounted = false;
       };
-    }, []);
+    }, [currentTheme]);
 
     const onToggleTheme = async (selected: boolean) => {
       const newTheme: "light" | "dark" = selected ? "dark" : "light";

@@ -6,7 +6,7 @@ import {Icon} from "@iconify/react";
 import {cn} from "@heroui/react";
 
 import TeamManageTable from "./pro/TeamManageTable";
-import { getTeamMembers } from "../../lib/settings";
+import { getTeamMembers } from "../../lib/settings"; 
 
 interface TeamSettingCardProps {
   className?: string;

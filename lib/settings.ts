@@ -12,7 +12,7 @@ export type TeamMember = { id: string; name: string; email: string; role: string
 
 let mockSettings: UserSettings = {
   userId: "user_1",
-  theme: "light",
+  theme: "dark",
   fontSize: "large",
   billingPlan: "pro-monthly",
 };
