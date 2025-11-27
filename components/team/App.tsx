@@ -634,15 +634,14 @@ export default function Component() {
         backdrop="blur"
         isDismissable
         placement="top"
+        size="md"
+        classNames={{
+          wrapper: "max-w-[480px] sm:max-w-[560px] mt-6 sm:mt-10",
+          body: "p-0",
+        }}
         onOpenChange={setIsViewOpen}
       >
-        <ModalContent
-          classNames={{
-            wrapper: "max-w-[480px] sm:max-w-[560px] mt-6 sm:mt-10",
-            body: "p-0",
-          }}
-          size="md"
-        >
+        <ModalContent>
           {(onClose) => (
             <ModalBody className="p-0">
               {selectedUser && <ProfileDetailedView user={selectedUser} />}
@@ -656,15 +655,14 @@ export default function Component() {
         backdrop="blur"
         isDismissable
         placement="top"
+        size="md"
+        classNames={{
+          wrapper: "max-w-[520px] sm:max-w-[640px] mt-6 sm:mt-10",
+          body: "p-0",
+        }}
         onOpenChange={setIsEditOpen}
       >
-        <ModalContent
-          classNames={{
-            wrapper: "max-w-[520px] sm:max-w-[640px] mt-6 sm:mt-10",
-            body: "p-0",
-          }}
-          size="md"
-        >
+        <ModalContent>
           {(onClose) => (
             <ModalBody className="p-0">
               {selectedUser && (
