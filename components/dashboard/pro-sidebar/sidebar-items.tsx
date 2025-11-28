@@ -9,6 +9,9 @@ export const items: SidebarItem[] = [
   { key: "home", href: "/dashboard", icon: "solar:home-2-linear", title: "Home" },
   { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
   { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
+  { key: "centers", href: "#", icon: "solar:factory-linear", title: "Centers" },
+  { key: "cages", href: "#", icon: "solar:fish-linear", title: "Cages" },
+  { key: "treatments", href: "#", icon: "solar:first-aid-kit-linear", title: "Treatments" },
   { key: "settings", href: "/settings", icon: "solar:settings-outline", title: "Settings" },
 ];
 
@@ -20,6 +23,9 @@ export const sectionItems: SidebarItem[] = [
       { key: "home", href: "/dashboard", icon: "solar:home-2-linear", title: "Home" },
       { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
       { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
+      { key: "centers", href: "#", icon: "solar:factory-linear", title: "Centers" },
+      { key: "cages", href: "#", icon: "solar:fish-linear", title: "Cages" },
+      { key: "treatments", href: "#", icon: "solar:first-aid-kit-linear", title: "Treatments" },
     ],
   },
   // Settings is rendered below the section (after the divider)
