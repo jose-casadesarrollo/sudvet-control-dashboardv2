@@ -11,7 +11,7 @@ export const items: SidebarItem[] = [
   { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
   { key: "centers", href: "#", icon: "solar:buildings-2-linear", title: "Centers" },
   { key: "cages", href: "#", icon: "mdi:fish", title: "Cages" },
-  { key: "treatments", href: "#", icon: "solar:first-aid-kit-linear", title: "Treatments" },
+  { key: "treatments", href: "#", icon: "mdi:first-aid-kit", title: "Treatments" },
   { key: "settings", href: "/settings", icon: "solar:settings-outline", title: "Settings" },
 ];
 
@@ -25,7 +25,7 @@ export const sectionItems: SidebarItem[] = [
       { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
       { key: "centers", href: "#", icon: "solar:buildings-2-linear", title: "Centers" },
       { key: "cages", href: "#", icon: "mdi:fish", title: "Cages" },
-      { key: "treatments", href: "#", icon: "solar:first-aid-kit-linear", title: "Treatments" },
+      { key: "treatments", href: "#", icon: "mdi:first-aid-kit", title: "Treatments" },
     ],
   },
   // Settings is rendered below the section (after the divider)
