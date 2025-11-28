@@ -85,8 +85,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           // with the header and avatar vertical centerline
           "border-r-small! border-divider transition-width relative flex h-full w-72 flex-col px-6 pb-6 pt-8",
           {
-            // Compact: fine-tune vertical rhythm
-            "w-16 items-center px-2 pb-4 pt-5": isCompact,
+            // Compact: lower the icon stack slightly (top padding up)
+            "w-16 items-center px-2 pb-4 pt-6": isCompact,
           },
         )}
       >
@@ -103,7 +103,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           )}
         </div>
         {/* Tighten up vertical spacing and hide the profile row on compact */}
-        <Spacer y={isCompact ? 1 : 4} />
+        <Spacer y={isCompact ? 3 : 4} />
         <div className={cn("flex items-center gap-3 px-3", { hidden: isCompact })}>
           <Avatar isBordered className="flex-none" size="sm" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
           <div className={cn("flex max-w-full flex-col", { hidden: isCompact })}>
@@ -111,7 +111,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <p className="text-tiny text-default-400 truncate">Product Designer</p>
           </div>
         </div>
-        <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6", isCompact ? "py-1 -mt-1" : "py-6") }>
+        <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6", isCompact ? "py-3 mt-1" : "py-6") }>
           <ProSidebar
             defaultSelectedKey="home"
             isCompact={isCompact}
