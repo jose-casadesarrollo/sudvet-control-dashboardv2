@@ -103,7 +103,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           )}
         </div>
         {/* Tighten up vertical spacing and hide the profile row on compact */}
-        <Spacer y={isCompact ? 3 : 4} />
+        <Spacer y={isCompact ? 2 : 4} />
         <div className={cn("flex items-center gap-3 px-3", { hidden: isCompact })}>
           <Avatar isBordered className="flex-none" size="sm" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
           <div className={cn("flex max-w-full flex-col", { hidden: isCompact })}>
@@ -111,11 +111,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <p className="text-tiny text-default-400 truncate">Product Designer</p>
           </div>
         </div>
-        <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6", isCompact ? "py-3 mt-1" : "py-6") }>
+        {/* Keep scroll area padding uniform. Fine-tune compact offset inside ProSidebar list. */}
+        <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6 py-6") }>
           <ProSidebar
             defaultSelectedKey="home"
             isCompact={isCompact}
             items={sectionItems}
+            classNames={{ list: isCompact ? "pt-6 pb-2" : undefined }}
             onNavSelect={(key: string) => {
               if (key === "settings") router.push("/settings");
               if (key === "home") router.push("/dashboard");
