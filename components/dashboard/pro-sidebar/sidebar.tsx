@@ -207,7 +207,8 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
         className={cn("list-none", className)}
         classNames={{
           ...classNames,
-          list: cn("items-center", classNames?.list),
+          // Center items only when compact. In expanded mode, stretch to align with content
+          list: cn(isCompact ? "items-center" : "items-stretch", classNames?.list),
         }}
         color="default"
         itemClasses={{

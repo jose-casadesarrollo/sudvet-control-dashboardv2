@@ -84,7 +84,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           // Increase top padding so the Sudvet logo center aligns
           // with the header and avatar vertical centerline
           "border-r-small! border-divider transition-width relative flex h-full w-72 flex-col px-6 pb-6 pt-8",
-          { "w-16 items-center px-2 pb-6 pt-8": isCompact },
+          {
+            // Compact: reduce horizontal and top paddings to remove extra gap
+            "w-16 items-center px-2 pb-4 pt-6": isCompact,
+          },
         )}
       >
         <div
@@ -99,15 +102,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <Image src="/logo_sudvet.png" alt="Sedvet" width={120} height={24} priority />
           )}
         </div>
-        <Spacer y={8} />
-        <div className="flex items-center gap-3 px-3">
+        {/* Tighten up vertical spacing and hide the profile row on compact */}
+        <Spacer y={isCompact ? 2 : 4} />
+        <div className={cn("flex items-center gap-3 px-3", { hidden: isCompact })}>
           <Avatar isBordered className="flex-none" size="sm" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
           <div className={cn("flex max-w-full flex-col", { hidden: isCompact })}>
             <p className="text-small text-default-600 truncate font-medium">John Doe</p>
             <p className="text-tiny text-default-400 truncate">Product Designer</p>
           </div>
         </div>
-        <ScrollShadow hideScrollBar className="-mr-6 h-full max-h-full py-6 pr-6">
+        <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6", isCompact ? "py-2" : "py-6") }>
           <ProSidebar
             defaultSelectedKey="home"
             isCompact={isCompact}
