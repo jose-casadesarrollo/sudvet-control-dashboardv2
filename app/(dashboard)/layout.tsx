@@ -81,8 +81,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <div className="flex h-screen w-screen overflow-hidden">
       <div
         className={cn(
-          "border-r-small! border-divider transition-width relative flex h-full w-72 flex-col p-6",
-          { "w-16 items-center px-2 py-6": isCompact },
+          // Increase top padding so the Sudvet logo center aligns
+          // with the header and avatar vertical centerline
+          "border-r-small! border-divider transition-width relative flex h-full w-72 flex-col px-6 pb-6 pt-8",
+          { "w-16 items-center px-2 pb-6 pt-8": isCompact },
         )}
       >
         <div
