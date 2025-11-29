@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@heroui/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { updateUserSettings } from "@/lib/settings";
 
@@ -37,6 +37,7 @@ const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const [user, setUser] = React.useState<any | null>(null);
+  const pathname = usePathname();
   const [locale, setLocale] = React.useState<string>(() => {
     try {
       return (localStorage.getItem("locale") as string) || "es";
@@ -50,6 +51,25 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
 
   const onToggle = React.useCallback(() => setIsCollapsed((p) => !p), []);
+
+  const currentKey = React.useMemo(() => {
+    const p = pathname || "";
+    if (p.startsWith("/settings")) return "settings";
+    if (p.startsWith("/team")) return "team";
+    return "home";
+  }, [pathname]);
+
+  const headerTitle = React.useMemo(() => {
+    switch (currentKey) {
+      case "team":
+        return "Team";
+      case "settings":
+        return "Settings";
+      case "home":
+      default:
+        return "Overview";
+    }
+  }, [currentKey]);
 
   React.useEffect(() => {
     let mounted = true;
@@ -114,7 +134,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         {/* Keep scroll area padding uniform. Fine-tune compact offset inside ProSidebar list. */}
         <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6 py-6") }>
           <ProSidebar
-            defaultSelectedKey="home"
+            key={`${isCompact ? "c" : "e"}-${currentKey}`}
+            defaultSelectedKey={currentKey}
             isCompact={isCompact}
             items={sectionItems}
             classNames={{ list: isCompact ? "pt-6 pb-2" : undefined }}
@@ -136,7 +157,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <Button isIconOnly size="sm" variant="light" onPress={onToggle}>
               <Icon className="text-default-500" height={24} icon="solar:sidebar-minimalistic-outline" width={24} />
             </Button>
-            <h2 className="text-medium text-default-700 font-medium">Overview</h2>
+            <h2 className="text-medium text-default-700 font-medium">{headerTitle}</h2>
           </div>
           <div className="flex items-center gap-3">
             <Dropdown placement="bottom-end">
