@@ -27,6 +27,9 @@ export const sectionItems: SidebarItem[] = [
   {
     key: "hero-ui",
     title: "Hero UI",
+    // Show a separator before this section and hide the heading text
+    showDivider: true,
+    sectionClassNames: { heading: "hidden" },
     items: [
       { key: "aware", href: "#", title: "AWARE®", classNames: { title: "text-small font-bold text-default-700" } },
       { key: "lyptus", href: "#", title: "LYPTUS®", classNames: { title: "text-small font-bold text-default-700" } },

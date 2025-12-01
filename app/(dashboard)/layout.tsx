@@ -106,24 +106,45 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         className={cn(
           // Increase top padding so the Sudvet logo center aligns
           // with the header and avatar vertical centerline
-          "border-r-small! border-divider transition-width relative flex h-full w-72 flex-col px-6 pb-6 pt-8",
+          "border-r-small! border-divider transition-[width] duration-300 ease-in-out will-change-[width] relative flex h-full w-72 flex-col px-6 pb-6 pt-8",
           {
-            // Compact: lower the icon stack slightly (top padding up)
-            "w-16 items-center px-2 pb-4 pt-6": isCompact,
+            // Compact: tuned top padding so icon + logo centers align
+            "w-16 items-center px-2 pb-4 pt-7": isCompact,
           },
         )}
       >
-        <div
-          className={cn(
-            "flex w-full items-center justify-center px-3",
-            { "gap-0": isCompact }
-          )}
-        >
-          {isCompact ? (
-            <Image src="/icono_sudvet.png" alt="Sedvet" width={32} height={32} priority />
-          ) : (
-            <Image src="/logo_sudvet.png" alt="Sedvet" width={120} height={24} priority />
-          )}
+        <div className={cn("flex w-full items-center justify-center px-3") }>
+          <div
+            className={cn(
+              "relative h-8 transition-[width] duration-300 ease-in-out transform-gpu transition-transform motion-reduce:transition-none",
+              isCompact ? "w-8 scale-95" : "w-[120px] scale-105",
+            )}
+          >
+            {/* Full logo */}
+            <Image
+              src="/logo_sudvet.png"
+              alt="Sedvet"
+              fill
+              sizes="120px"
+              priority
+              className={cn(
+                "object-contain transition-opacity duration-200 ease-out",
+                isCompact ? "opacity-0" : "opacity-100",
+              )}
+            />
+            {/* Compact icon */}
+            <Image
+              src="/icono_sudvet.png"
+              alt="Sedvet icon"
+              fill
+              sizes="32px"
+              priority
+              className={cn(
+                "object-contain transition-opacity duration-200 ease-out",
+                isCompact ? "opacity-100" : "opacity-0",
+              )}
+            />
+          </div>
         </div>
         {/* Tighten up vertical spacing and hide the profile row on compact */}
         <Spacer y={isCompact ? 2 : 4} />
@@ -137,16 +158,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         {/* Sidebar content should be static (no internal scroll) */}
         <div className={cn("flex-1 max-h-full pr-6 py-6") }>
           <ProSidebar
-            key={`${isCompact ? "c" : "e"}-${currentKey}`}
             defaultSelectedKey={currentKey}
             isCompact={isCompact}
             items={sectionItems}
             classNames={{ list: isCompact ? "pt-6 pb-2" : undefined }}
-            onNavSelect={(key: string) => {
-              if (key === "home") router.push("/dashboard");
-              if (key === "team") router.push("/team");
-              if (key === "profile") router.push("/settings/profile");
-            }}
           />
         </div>
 
