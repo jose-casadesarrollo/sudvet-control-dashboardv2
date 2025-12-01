@@ -1,18 +1,18 @@
+/* Ensure Tailwind uses our project config BEFORE importing the framework */
+@config "../tailwind.config.js";
+
+/* Tailwind v4 single import */
 @import "tailwindcss";
 
-@config "../tailwind.config.js"
-
-/* Apply Poppins to main title/section heading patterns.
-	 The font variable is injected onto the <body> by Next Font (see config/fonts.ts).
-	 This keeps body text using Inter (font-sans) while headings and title-sized classes
-	 use Poppins for brand consistency. */
-h1, h2, h3, h4,
-.text-2xl, .text-3xl, .text-4xl,
-.text-medium {
-	font-family: var(--font-poppins) !important;
+/* Optional: a lightweight, opt‑in utility for headings.
+   Avoid overriding generic Tailwind utilities like .text-2xl/.text-medium
+   to prevent conflicts with HeroUI generated classes. */
+.font-poppins {
+  font-family: var(--font-poppins);
 }
 
-/* Utility class to opt-in when needed */
-.font-poppins {
-	font-family: var(--font-poppins) !important;
+/* Semantic headings can also opt-in via :where to keep specificity low */
+:where(h1, h2, h3, h4)[class*="heading"],
+:where(h1, h2, h3, h4).font-poppins {
+  font-family: var(--font-poppins);
 }
