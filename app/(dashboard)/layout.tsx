@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { ReactNode } from "react";
-import { ScrollShadow, Spacer, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Switch, Button } from "@heroui/react";
+import { ScrollShadow, Spacer, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Switch, Button, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@heroui/react";
@@ -166,25 +166,53 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Bottom actions (stick to bottom of the sidebar column) */}
-        <div className="mt-auto px-3">
-          <nav className="flex flex-col gap-1">
-            <button
-              onClick={() => router.push("/settings")}
-              className="flex items-center gap-2 px-3 min-h-11 rounded-large h-[44px] hover:bg-default-100 text-default-700 w-full"
-            >
-              <Icon className="text-default-500" icon="solar:settings-outline" width={20} />
-              <span className="text-small font-medium">Settings</span>
-            </button>
-            <button
-              onClick={async () => {
-                await supabase.auth.signOut();
-                router.push("/login");
-              }}
-              className="flex items-center gap-2 px-3 min-h-11 rounded-large h-[44px] hover:bg-default-100 text-default-700 w-full"
-            >
-              <Icon className="text-default-500" icon="solar:logout-2-outline" width={20} />
-              <span className="text-small font-medium">Sign out</span>
-            </button>
+        <div className={cn("mt-auto px-3", { "px-0": isCompact })}>
+          <nav className={cn("flex flex-col gap-1", { "items-center gap-2": isCompact })}>
+            {isCompact ? (
+              <>
+                <Tooltip content="Settings" placement="right" delay={150}>
+                  <button
+                    aria-label="Settings"
+                    onClick={() => router.push("/settings")}
+                    className="w-11 h-11 rounded-large hover:bg-default-100 flex items-center justify-center"
+                  >
+                    <Icon className="text-default-500" icon="solar:settings-outline" width={22} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Sign out" placement="right" delay={150}>
+                  <button
+                    aria-label="Sign out"
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      router.push("/login");
+                    }}
+                    className="w-11 h-11 rounded-large hover:bg-default-100 flex items-center justify-center"
+                  >
+                    <Icon className="text-default-500" icon="solar:logout-2-outline" width={22} />
+                  </button>
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => router.push("/settings")}
+                  className="flex items-center gap-2 px-3 min-h-11 rounded-large h-[44px] hover:bg-default-100 text-default-700 w-full"
+                >
+                  <Icon className="text-default-500" icon="solar:settings-outline" width={20} />
+                  <span className="text-small font-medium">Settings</span>
+                </button>
+                <button
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    router.push("/login");
+                  }}
+                  className="flex items-center gap-2 px-3 min-h-11 rounded-large h-[44px] hover:bg-default-100 text-default-700 w-full"
+                >
+                  <Icon className="text-default-500" icon="solar:logout-2-outline" width={20} />
+                  <span className="text-small font-medium">Sign out</span>
+                </button>
+              </>
+            )}
           </nav>
         </div>
       </div>
