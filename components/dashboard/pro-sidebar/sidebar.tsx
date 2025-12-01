@@ -93,20 +93,26 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
           delete item.href;
         }
 
+        // Merge item-level classNames with internal adjustments for nest items
+        const { classNames: itemClassNames, ...restItem } = item as SidebarItem & { classNames?: Record<string, string> };
+        const mergedClassNames = {
+          ...itemClassNames,
+          base: cn(
+            itemClassNames?.base,
+            {
+              "h-auto p-0": !isCompact && isNestType,
+            },
+            {
+              "inline-block w-11": isCompact && isNestType,
+            },
+          ),
+        } as Record<string, string> | undefined;
+
         return (
           <ListboxItem
-            {...item}
+            {...restItem}
             key={item.key}
-            classNames={{
-              base: cn(
-                {
-                  "h-auto p-0": !isCompact && isNestType,
-                },
-                {
-                  "inline-block w-11": isCompact && isNestType,
-                },
-              ),
-            }}
+            classNames={mergedClassNames}
             endContent={isCompact || isNestType || hideEndContent ? null : item.endContent ?? null}
             startContent={
               isCompact || isNestType ? null : item.icon ? (
@@ -138,7 +144,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
                     item.icon ? (
                       <div className={"flex h-11 items-center gap-2 px-2 py-1.5"}>
                         <Icon className={cn("text-default-500 group-data-[selected=true]:text-foreground", iconClassName)} icon={item.icon} width={24} />
-                        <span className="text-small text-default-500 group-data-[selected=true]:text-foreground font-medium">{item.title}</span>
+                        <span className={cn("text-small text-default-500 group-data-[selected=true]:text-foreground font-medium", itemClassNames?.title)}>{item.title}</span>
                       </div>
                     ) : (
                       item.startContent ?? null
