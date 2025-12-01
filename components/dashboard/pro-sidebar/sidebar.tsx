@@ -29,6 +29,9 @@ export type SidebarItem = {
   endContent?: React.ReactNode;
   items?: SidebarItem[];
   className?: string;
+  // Allow passing ListboxItem classNames per item (e.g., to style title text)
+  // Using a loose type to avoid tight coupling to @heroui/react internals
+  classNames?: Record<string, string>;
 };
 
 export type SidebarProps = Omit<ListboxProps<SidebarItem>, "children" | "onSelect"> & {

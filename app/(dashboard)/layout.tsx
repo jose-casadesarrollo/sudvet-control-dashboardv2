@@ -54,6 +54,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   const currentKey = React.useMemo(() => {
     const p = pathname || "";
+    if (p.startsWith("/settings/profile")) return "profile";
     if (p.startsWith("/settings")) return "settings";
     if (p.startsWith("/team")) return "team";
     return "home";
@@ -65,6 +66,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         return "Team";
       case "settings":
         return "Settings";
+      case "profile":
+        return "Profile";
       case "home":
       default:
         return "Overview";
