@@ -167,7 +167,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
         {/* Bottom actions (stick to bottom of the sidebar column) */}
         <div className={cn("mt-auto px-3", { "px-0": isCompact })}>
-          <nav className={cn("flex flex-col gap-1", { "items-center gap-2": isCompact })}>
+          <nav className={cn("flex flex-col gap-1 w-full", { "items-center gap-2": isCompact })}>
             {isCompact ? (
               <>
                 <Tooltip content="Settings" placement="right" delay={150}>
