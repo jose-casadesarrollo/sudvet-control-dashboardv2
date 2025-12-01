@@ -131,8 +131,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <p className="text-tiny text-default-400 truncate">Product Designer</p>
           </div>
         </div>
-        {/* Keep scroll area padding uniform. Fine-tune compact offset inside ProSidebar list. */}
-        <ScrollShadow hideScrollBar className={cn("-mr-6 h-full max-h-full pr-6 py-6") }>
+        {/* Sidebar content should be static (no internal scroll) */}
+        <div className={cn("flex-1 max-h-full pr-6 py-6") }>
           <ProSidebar
             key={`${isCompact ? "c" : "e"}-${currentKey}`}
             defaultSelectedKey={currentKey}
@@ -140,15 +140,35 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             items={sectionItems}
             classNames={{ list: isCompact ? "pt-6 pb-2" : undefined }}
             onNavSelect={(key: string) => {
-              if (key === "settings") router.push("/settings");
               if (key === "home") router.push("/dashboard");
-              if (key === "team") router.push("/team"); // Added navigation for team
-              if (key === "signout") {
-                supabase.auth.signOut().finally(() => router.push("/login"));
-              }
+              if (key === "team") router.push("/team");
+              if (key === "profile") router.push("/settings/profile");
             }}
           />
-        </ScrollShadow>
+        </div>
+
+        {/* Bottom actions (stick to bottom of the sidebar column) */}
+        <div className="mt-auto px-3">
+          <nav className="flex flex-col gap-1">
+            <button
+              onClick={() => router.push("/settings")}
+              className="flex items-center gap-2 px-3 min-h-11 rounded-large h-[44px] hover:bg-default-100 text-default-700 w-full"
+            >
+              <Icon className="text-default-500" icon="solar:settings-outline" width={20} />
+              <span className="text-small font-medium">Settings</span>
+            </button>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+                router.push("/login");
+              }}
+              className="flex items-center gap-2 px-3 min-h-11 rounded-large h-[44px] hover:bg-default-100 text-default-700 w-full"
+            >
+              <Icon className="text-default-500" icon="solar:logout-2-outline" width={20} />
+              <span className="text-small font-medium">Sign out</span>
+            </button>
+          </nav>
+        </div>
       </div>
 
       <div className="w-full flex-1 flex flex-col p-4 min-h-0">

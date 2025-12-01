@@ -7,30 +7,33 @@ import TeamAvatar from "./team-avatar";
 
 export const items: SidebarItem[] = [
   { key: "home", href: "/dashboard", icon: "solar:home-2-linear", title: "Home" },
-  { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
-  { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
-  { key: "centers", href: "#", icon: "solar:buildings-2-linear", title: "Centers" },
-  { key: "cages", href: "#", icon: "mdi:fish", title: "Cages" },
   { key: "treatments", href: "#", icon: "mdi:first-aid-kit", title: "Treatments" },
-  { key: "settings", href: "/settings", icon: "solar:settings-outline", title: "Settings" },
+  { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
+  { key: "profile", href: "/settings/profile", icon: "solar:user-circle-linear", title: "Profile" },
 ];
 
 export const sectionItems: SidebarItem[] = [
   {
-    key: "overview",
+    key: "main",
     title: "Overview",
     items: [
       { key: "home", href: "/dashboard", icon: "solar:home-2-linear", title: "Home" },
-      { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
-      { key: "tasks", href: "#", icon: "solar:checklist-minimalistic-outline", title: "Tasks" },
-      { key: "centers", href: "#", icon: "solar:buildings-2-linear", title: "Centers" },
-      { key: "cages", href: "#", icon: "mdi:fish", title: "Cages" },
       { key: "treatments", href: "#", icon: "mdi:first-aid-kit", title: "Treatments" },
+      { key: "team", href: "/team", icon: "solar:users-group-two-rounded-outline", title: "Team" },
+      { key: "profile", href: "/settings/profile", icon: "solar:user-circle-linear", title: "Profile" },
     ],
   },
-  // Settings is rendered below the section (after the divider)
-  { key: "settings", href: "/settings", icon: "solar:settings-outline", title: "Settings" },
-  { key: "signout", href: "#", icon: "solar:logout-2-outline", title: "Sign out" },
+  // Hero UI divider / section
+  {
+    key: "hero-ui",
+    title: "Hero UI",
+    items: [
+      { key: "aware", href: "#", title: "AWARE®", classNames: { title: "text-small font-bold text-default-700" } },
+      { key: "lyptus", href: "#", title: "LYPTUS®", classNames: { title: "text-small font-bold text-default-700" } },
+      { key: "rosseus", href: "#", title: "ROSSEUS®", classNames: { title: "text-small font-bold text-default-700" } },
+    ],
+  },
+  // Settings and sign out will be rendered at the bottom of the sidebar in the layout
 ];
 
 export const sectionItemsWithTeams: SidebarItem[] = [
