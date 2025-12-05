@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         className={cn(
           // Increase top padding so the Sudvet logo center aligns
           // with the header and avatar vertical centerline
-          "border-r-small! border-divider transition-[width] duration-300 ease-in-out will-change-[width] relative flex h-full w-72 flex-col px-6 pb-6 pt-8",
+          "border-r-small! border-divider transition-[width] duration-300 ease-in-out will-change-[width] relative flex h-full w-72 flex-col px-[18px] pb-6 pt-8",
           {
             // Compact: tuned top padding so icon + logo centers align
             "w-16 items-center px-2 pb-4 pt-7": isCompact,
