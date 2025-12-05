@@ -155,8 +155,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <p className="text-tiny text-default-400 truncate">Product Designer</p>
           </div>
         </div>
-        {/* Sidebar content should be static (no internal scroll) */}
-        <div className={cn("flex-1 max-h-full pr-6 py-6") }>
+        {/* Sidebar content wrapper: remove extra right padding so gaps are symmetric.
+          Resulting horizontal gaps (from outer column):
+          - Expanded: 24px left / 24px right (px-6 on column)
+          - Collapsed: 8px left / 8px right (px-2 on column)
+        */}
+        <div className={cn("flex-1 max-h-full py-6") }>
           <ProSidebar
             defaultSelectedKey={currentKey}
             isCompact={isCompact}
